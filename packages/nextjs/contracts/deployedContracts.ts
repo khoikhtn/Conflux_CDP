@@ -5,120 +5,6 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  71: {
-    YourContract: {
-      address: "0xbdDF750Fe91e1Dd24468eEeA5D49b3D95ABDAD59",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_owner",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "greeting",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "_newGreeting",
-              type: "string",
-            },
-          ],
-          name: "setGreeting",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "totalCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address payable",
-              name: "_recipient",
-              type: "address",
-            },
-          ],
-          name: "transferEther",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "userGreetingCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "withdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          stateMutability: "payable",
-          type: "receive",
-        },
-      ],
-      inheritedFunctions: {},
-    },
-  },
   31337: {
     YourContract: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
@@ -126,9 +12,14 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "_owner",
-              type: "address",
+              internalType: "uint256",
+              name: "_interestRate",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_minCollateralizationRatio",
+              type: "uint256",
             },
           ],
           stateMutability: "nonpayable",
@@ -138,52 +29,59 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: true,
-              internalType: "address",
-              name: "greetingSetter",
-              type: "address",
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
             },
+          ],
+          name: "LoanExpired",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
             {
               indexed: false,
               internalType: "string",
-              name: "newGreeting",
+              name: "message",
               type: "string",
             },
             {
               indexed: false,
-              internalType: "bool",
-              name: "premium",
-              type: "bool",
+              internalType: "uint256",
+              name: "repayRequirement",
+              type: "uint256",
+            },
+          ],
+          name: "LoanGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "borrower",
+              type: "address",
             },
             {
               indexed: false,
               internalType: "uint256",
-              name: "value",
+              name: "repaidAmount",
               type: "uint256",
             },
           ],
-          name: "GreetingChange",
+          name: "LoanRepaid",
           type: "event",
         },
         {
           inputs: [],
-          name: "greeting",
+          name: "colToken",
           outputs: [
             {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
-            {
-              internalType: "address",
+              internalType: "contract IERC20",
               name: "",
               type: "address",
             },
@@ -193,11 +91,55 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "premium",
+          name: "interestRate",
           outputs: [
             {
-              internalType: "bool",
+              internalType: "uint256",
               name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "loans",
+          outputs: [
+            {
+              internalType: "address",
+              name: "borrower",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "borrowedAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "collateralAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "repayRequirement",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "requestedAt",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "paid",
               type: "bool",
             },
           ],
@@ -205,21 +147,8 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "string",
-              name: "_newGreeting",
-              type: "string",
-            },
-          ],
-          name: "setGreeting",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
           inputs: [],
-          name: "totalCounter",
+          name: "minCollateralizationRatio",
           outputs: [
             {
               internalType: "uint256",
@@ -233,27 +162,58 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
+              internalType: "uint256",
+              name: "repayAmount",
+              type: "uint256",
+            },
+          ],
+          name: "repayLoan",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "repayPeriod",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_borrowedAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_collateralAmount",
+              type: "uint256",
+            },
+          ],
+          name: "requestLoan",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "staToken",
+          outputs: [
+            {
+              internalType: "contract IERC20",
               name: "",
               type: "address",
             },
           ],
-          name: "userGreetingCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "withdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
